@@ -13,19 +13,17 @@ import java.io._
     l match
       case file(l) =>
         var str1 = l.substring(6,l.length)
-        var file=Source.fromFile(str1,"utf-8").getLines.flatMap(_.split("\\W+")).toList
+        var file=Source.fromFile(str1,"utf-8").getLines.flatMap(_.split("\\W+").map(x => x.toLowerCase).filter(!stopwords.contains(_))).toList
         //for(i <- stopwords)
           //if (file.contains(i)) then
             //file=file.filterNot(el => el == i)
         for
           word <- file
-          if !stopwords.contains(word.toLowerCase)
         do
-          val wordLower = word.toLowerCase
-          if WordCountMAP.contains(wordLower) then
-            WordCountMAP += (wordLower -> (WordCountMAP(wordLower)+1))
+          if WordCountMAP.contains(word) then
+            WordCountMAP += (word -> (WordCountMAP(word)+1))
           else
-            WordCountMAP += (wordLower -> 1)
+            WordCountMAP += (word -> 1)
       case pfirst(l) =>
         val cnt = l.substring(7,l.length).toInt
         val SortMap = WordCountMAP.toSeq.sortWith(_._2 > _._2).take(cnt)
