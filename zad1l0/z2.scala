@@ -4,18 +4,18 @@ import scala.collection.immutable._
   var y :  Array[Seq[(Int, Array[Int])]] = Array(Seq((1,Array(2,3))), Seq((3,Array(1,5))), Seq((2,Array(5))), Seq((5, Array.emptyIntArray)))
   //val w = map_func(Seq((1,Array(2,3))))
   var inverted_kv: Array[Seq[(Int, Array[Int])]]=Array()
-  var ArrayAllNode: Array[(Int)] = Array()
-  for seq <- y do
+  var ArrayAllNode: Array[(Int)] = Array() //lista wszytskich nodes
+  for seq <- y do  //po każdej parze (klucz, wartość)
     var wynik_map_func = map_func(seq)
-    ArrayAllNode= ArrayAllNode.concat(Array(seq(0)(0)))
-    inverted_kv=inverted_kv.concat(wynik_map_func)
+    ArrayAllNode= ArrayAllNode.concat(Array(seq(0)(0)))  //lista wszytskich nodes
+    inverted_kv=inverted_kv.concat(wynik_map_func) //pary odwrócone (wartość, klucz)
   var Map_GroupByKeys = scala.collection.mutable.Map[Int, Array[Seq[(Int, Array[Int])]]]()
   for node <- ArrayAllNode do
-    Map_GroupByKeys += (node -> inverted_kv.filter(x => x(0)(0)==node))
+    Map_GroupByKeys += (node -> inverted_kv.filter(x => x(0)(0)==node))  //rozdzielam pary na podstawie pierwszej wartości
 
   var Inverted_RESULT: Array[Seq[(Int, Array[Int])]] = Array()
   for (k,v) <- Map_GroupByKeys do
-    Inverted_RESULT=Inverted_RESULT.concat(Array(reduce_func(k,v)))
+    Inverted_RESULT=Inverted_RESULT.concat(Array(reduce_func(k,v)))  //lączę wartości dla każdego nodea w jednego arraya
   //Drukowanie wyników
 
   print_res(y)
@@ -29,7 +29,7 @@ def map_func(conn_node: Seq[(Int, Array[Int])]): Array[Seq[(Int, Array[Int])]] =
   for n <- conn_node(0)(1) do
     var inverted_conn: Seq[(Int, Array[Int])] = Seq((n,Array(conn_node(0)(0))))
     inverted_conn_all=inverted_conn_all.concat(Array(inverted_conn))
-    println(inverted_conn_all.length + " " + n.toString)
+    //println(inverted_conn_all.length + " " + n.toString)
   return inverted_conn_all
 def reduce_func(k: Int, grouped_val: Array[Seq[(Int, Array[Int])]]):Seq[(Int, Array[Int])]=
   var list_of_conn: Array[(Int)] = Array()

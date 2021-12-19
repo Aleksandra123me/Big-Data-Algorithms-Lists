@@ -15,16 +15,18 @@ import java.io._
       case file(l) =>
         var str1 = l.substring(6,l.length)
         var file=Source.fromFile(str1,"utf-8").getLines.flatMap(_.split("\\W+").map(x => x.toLowerCase).filter(!stopwords.contains(_))).toList
+//otwieram plik, usuwam stopwordsy, zmieniam na male litery i tworzę listę...
         //for(i <- stopwords)
           //if (file.contains(i)) then
             //file=file.filterNot(el => el == i)
         for
           word <- file
         do
-          if WordCountMAP.contains(word) then
+          if WordCountMAP.contains(word) then   //jeżeli slowo jest w slowniku, to zwiekszam wartosc o 1.....
             WordCountMAP += (word -> (WordCountMAP(word)+1))
           else
             WordCountMAP += (word -> 1)
+
 
       //Tu robię TF.IDF
         var WordAndTDIDF = scala.collection.mutable.Map[String, Double]()

@@ -3,6 +3,7 @@ import java.util.regex.Pattern
 import java.io._
 import scala.math._
 
+//w ilu tekstach wystepuje dane slowo
 def WordInTexts(MapOfMaps: scala.collection.mutable.Map[String, scala.collection.mutable.Map[String, Int]], word: String): Int =
   var Text_contains = 0
   for (k,v) <- MapOfMaps do
@@ -30,14 +31,14 @@ def WordInTexts(MapOfMaps: scala.collection.mutable.Map[String, scala.collection
         var str1 = l.substring(6,l.length)
         var file=Source.fromFile(str1,"utf-8").getLines.mkString(" ").split("\\W+").map(x => x.toLowerCase).filter(!stopwords.contains(_)).toList
         //println(file)
-        NumberOfWord_Txt += (str1 -> file.length)
+        NumberOfWord_Txt += (str1 -> file.length) //map z liczbą wyrazów dla każdego
         var WordCntMap = scala.collection.mutable.Map[String, Int]()
 
         for
           word <- file
         do
-          WordCntMap += (word -> (file.count(_ == word)))
-          if WordCountMAP.contains(word) then
+          WordCntMap += (word -> (file.count(_ == word)))  //dla tekstu
+          if WordCountMAP.contains(word) then  //dla wszytskich tekstow razem
             WordCountMAP += (word -> (WordCountMAP(word)+1))
           else
             WordCountMAP += (word -> 1)
@@ -68,7 +69,7 @@ def WordInTexts(MapOfMaps: scala.collection.mutable.Map[String, scala.collection
             //println(loop_idf)
             TDIDF_ONETxt += (word -> loop_tf*loop_idf)
           TDIDF_ALLTxt += (file -> TDIDF_ONETxt)
-        println(TDIDF_ALLTxt)
+        //println(TDIDF_ALLTxt)
 
 
         var cnt = l.substring(7,l.length).toInt
